@@ -1,16 +1,19 @@
 ﻿// each question have own branch
-int MaxProfit(int[] prices)
+int LengthOfLongestSubstring(string s)
 {
-    int l = 0, r = 1, maxProfit = 0;
-    for (int i=1;i < prices.Length;i++)
+    int max = 0,l = 0;
+    var table = new HashSet<int>();
+    for (int r=0;r<s.Length;r++)
     {
-        int profit = prices[r] - prices[l];
-        if (profit > maxProfit) maxProfit = profit;
-        if (prices[r] < prices[l])
+        while (table.Contains(s[r]))
         {
-            l = r;
+            table.Remove(s[l]);
+            l++;
         }
-        r++;
+        table.Add(s[r]);
+        int diff = r - l + 1;
+        if (diff > max) max = diff;
     }
-    return maxProfit;
+
+    return max;
 }
