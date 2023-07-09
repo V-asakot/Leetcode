@@ -1,64 +1,39 @@
 ﻿// each question have own branch
 
-class Node
+var q = new KthLargest(1,new int[0]);
+q.Add(-3);
+q.Add(-2);
+q.Add(-4);
+q.Add(0);
+q.Add(4);
+
+class KthLargest
 {
-    public readonly Node[] children;
-    public bool endOfWord;
-
-    public Node()
+    private readonly PriorityQueue<int,int> _queue;
+    private readonly int _k;
+   public KthLargest(int k, int[] nums)
     {
-        children = new Node[26];
-    }
-}
-class Trie
-{
-    private readonly Node head;
-    public Trie()
-    {
-        head = new Node();
-    }
-
-    public void Insert(string word)
-    {
-        var cur = head;
-        foreach (var ch in word)
+        _queue = new PriorityQueue<int, int>();
+        _k = k;
+        foreach (var num in nums)
         {
-            int index = GetCharIndex(ch);
-            if (cur.children[index] is null)
-                cur.children[index] = new Node();
-            cur = cur.children[index];
+            _queue.Enqueue(num,num);
         }
 
-        cur.endOfWord = true;
-    }
-
-    public bool Search(string word)
-    {
-        var cur = head;
-        foreach (var ch in word)
+        while (_queue.Count > k)
         {
-            int index = GetCharIndex(ch);
-            if (cur.children[index] is null)
-                return false;
-            cur = cur.children[index];
+            _queue.Dequeue();
         }
-
-        return cur.endOfWord;
     }
 
-    public bool StartsWith(string prefix)
+    public int Add(int val)
     {
-        var cur = head;
-        foreach (var ch in prefix)
+        _queue.Enqueue(val, val);
+        while (_queue.Count > _k)
         {
-            int index = GetCharIndex(ch);
-            if (cur.children[index] is null)
-                return false;
-            cur = cur.children[index];
+            _queue.Dequeue();
         }
-
-        return true;
+        return _queue.Peek();
     }
 
-    private int GetCharIndex(char ch) => ((int)ch) - 97;
 }
