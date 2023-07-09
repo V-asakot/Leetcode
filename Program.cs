@@ -1,19 +1,64 @@
 ﻿// each question have own branch
-int LengthOfLongestSubstring(string s)
+
+class Node
 {
-    int max = 0,l = 0;
-    var table = new HashSet<int>();
-    for (int r=0;r<s.Length;r++)
+    public readonly HashSet<Node> children;
+    public bool endOfWord;
+
+    public Node()
     {
-        while (table.Contains(s[r]))
-        {
-            table.Remove(s[l]);
-            l++;
-        }
-        table.Add(s[r]);
-        int diff = r - l + 1;
-        if (diff > max) max = diff;
+        children = new HashSet<Node>();
+    }
+}
+class Trie
+{
+    private readonly Node head;
+    public Trie()
+    {
+        head = new Node();
     }
 
-    return max;
+    public void Insert(string word)
+    {
+        var cur = head;
+        foreach (var ch in word)
+        {
+            int index = GetCharIndex(ch);
+            if (cur.children[index] is null)
+                cur.children[index] = new Node();
+            cur = cur.children[index];
+        }
+
+        cur.endOfWord = true;
+    }
+
+    public bool Search(string word)
+    {
+        var cur = head;
+        foreach (var ch in word)
+        {
+            int index = GetCharIndex(ch);
+            if (cur.children[index] is null)
+                return false;
+            cur = cur.children[index];
+        }
+
+        return cur.endOfWord;
+    }
+
+    public bool StartsWith(string prefix)
+    {
+        var cur = head;
+        foreach (var ch in prefix)
+        {
+            int index = GetCharIndex(ch);
+            if (cur.children[index] is null)
+                return false;
+            cur = cur.children[index];
+        }
+
+        return true;
+    }
+
+    private int GetCharIndex(char ch) => ((int)ch) - 97;
 }
