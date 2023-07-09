@@ -1,5 +1,6 @@
 ﻿// each question have own branch
 
+
 class Node
 {
     public readonly Node[] children;
