@@ -2,12 +2,12 @@
 
 class Node
 {
-    public readonly HashSet<Node> children;
+    public readonly Node[] children;
     public bool endOfWord;
 
     public Node()
     {
-        children = new HashSet<Node>();
+        children = new Node[26];
     }
 }
 class Trie
