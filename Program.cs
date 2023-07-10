@@ -4,27 +4,22 @@ int EvalRPN(string[] tokens)
 {
     var stack = new Stack<int>();
 
-    void MathOperation(Func<int,int,int> predicate)
+    int MathOperation(Func<int,int,int> predicate)
     {
         int s = stack.Pop(), f = stack.Pop();
-        stack.Push(predicate(f,s));
+        return predicate(f,s);
     }
 
     foreach (string s in tokens)
     {
-        switch (s)
+        stack.Push(s switch
         {
-            case "+":
-                MathOperation((x, y) => x + y); break;
-            case "-":
-                MathOperation((x, y) => x - y); break;
-            case "*":
-                MathOperation((x, y) => x * y); break;
-            case "/":
-                MathOperation((x, y) => x / y); break;
-            default: 
-                stack.Push(int.Parse(s)); break;
-        }
+            "+" => MathOperation((x, y) => x + y),
+            "-" => MathOperation((x, y) => x - y),
+            "*" => MathOperation((x, y) => x * y),
+            "/" => MathOperation((x, y) => x / y),
+            _ => int.Parse(s)
+        });
     }
 
     return stack.Pop();
