@@ -1,32 +1,31 @@
 ﻿// each question have own branch
 
-class KthLargest
+int EvalRPN(string[] tokens)
 {
-    private readonly PriorityQueue<int,int> _queue;
-    private readonly int _k;
-   public KthLargest(int k, int[] nums)
-    {
-        _queue = new PriorityQueue<int, int>();
-        _k = k;
-        foreach (var num in nums)
-        {
-            _queue.Enqueue(num,num);
-        }
+    var stack = new Stack<int>();
 
-        while (_queue.Count > k)
+    void MathOperation(Func<int,int,int> predicate)
+    {
+        int s = stack.Pop(), f = stack.Pop();
+        stack.Push(predicate(f,s));
+    }
+
+    foreach (string s in tokens)
+    {
+        switch (s)
         {
-            _queue.Dequeue();
+            case "+":
+                MathOperation((x, y) => x + y); break;
+            case "-":
+                MathOperation((x, y) => x - y); break;
+            case "*":
+                MathOperation((x, y) => x * y); break;
+            case "/":
+                MathOperation((x, y) => x / y); break;
+            default: 
+                stack.Push(int.Parse(s)); break;
         }
     }
 
-    public int Add(int val)
-    {
-        _queue.Enqueue(val, val);
-        while (_queue.Count > _k)
-        {
-            _queue.Dequeue();
-        }
-        return _queue.Peek();
-    }
-
+    return stack.Pop();
 }
