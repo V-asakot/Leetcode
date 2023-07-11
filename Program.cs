@@ -1,31 +1,29 @@
 ﻿// each question have own branch
 
-int EvalRPN(string[] tokens)
+IList<IList<int>> ThreeSum(int[] nums)
 {
-    var stack = new Stack<int>();
-
-    void MathOperation(Func<int,int,int> predicate)
+    var res = new List<IList<int>>();
+    Array.Sort(nums);
+    int prev = -1;
+    for (int i = 0; i < nums.Length - 2; i++)
     {
-        int s = stack.Pop(), f = stack.Pop();
-        stack.Push(predicate(f,s));
-    }
+        if (i > 0 && prev == nums[i]) continue;
+        int first = nums[i];
+        int l = i + 1, r = nums.Length;
 
-    foreach (string s in tokens)
-    {
-        switch (s)
+        while (l < r)
         {
-            case "+":
-                MathOperation((x, y) => x + y); break;
-            case "-":
-                MathOperation((x, y) => x - y); break;
-            case "*":
-                MathOperation((x, y) => x * y); break;
-            case "/":
-                MathOperation((x, y) => x / y); break;
-            default: 
-                stack.Push(int.Parse(s)); break;
+            int sum = first + nums[l] + nums[r];
+            if (sum > 0) r--;
+            else if (sum < 0) l++;
+            else
+            {
+                res.Add(new List<int>() { first, nums[l], nums[r] });
+                l++;
+                while (nums[l-1] == nums[l] && l < r) l++;
+            }
         }
     }
 
-    return stack.Pop();
+    return res;
 }
