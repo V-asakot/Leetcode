@@ -1,5 +1,13 @@
 ﻿// each question have own branch
 
+bool IsSubtree(TreeNode root, TreeNode subRoot)
+{
+    if (subRoot is null) return true;
+    else if (root is null) return false;
+    if (IsSameTree(root, subRoot)) return true;
+    return IsSubtree(root.left,subRoot) || IsSubtree(root.right, subRoot);
+}
+
 bool IsSameTree(TreeNode p, TreeNode q)
 {
     if (p is null && q is null) return true;
