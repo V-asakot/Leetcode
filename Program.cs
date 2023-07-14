@@ -1,30 +1,45 @@
 ﻿// each question have own branch
+using System.Runtime.InteropServices;
 
-bool IsSubtree(TreeNode root, TreeNode subRoot)
+public class ListNode
 {
-    if (subRoot is null) return true;
-    else if (root is null) return false;
-    if (IsSameTree(root, subRoot)) return true;
-    return IsSubtree(root.left,subRoot) || IsSubtree(root.right, subRoot);
-}
-
-bool IsSameTree(TreeNode p, TreeNode q)
-{
-    if (p is null && q is null) return true;
-    else if (p is null || q is null || p.val != q.val) return false;
-
-    return IsSameTree(p.left, q.left) && IsSameTree(p.right, q.right);
-}
-
-public class TreeNode
-{
-    public int val;
-    public TreeNode left;
-    public TreeNode right;
-    public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
-    {
+     public int val;
+     public ListNode next;
+     public ListNode(int val = 0, ListNode next = null)
+     {
         this.val = val;
-        this.left = left;
-        this.right = right;
+        this.next = next;
+      }
+}
+
+public class Solution
+{
+    public void ReorderList(ListNode head)
+    {
+        //find middle
+        ListNode slow = head, fast = head.next;
+        while (fast is not null && fast.next is not null)
+        {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        //reverse second  half
+        var second = slow.next;
+        var prev = slow.next = null;
+        while (second is not null)
+        {
+            var tmp = second.next;
+            second.next = prev;
+            prev = second;
+            second = tmp;
+        }
+        //merge two halfs
+        var first = head;
+        second = prev;
+        while (second is not null)
+        {
+
+        }
     }
 }
