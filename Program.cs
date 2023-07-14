@@ -39,7 +39,12 @@ public class Solution
         second = prev;
         while (second is not null)
         {
-
+            var tmp1 = first.next;
+            var tmp2 = second.next;
+            first.next = second;
+            second.next = tmp1;
+            first = tmp1;
+            second = tmp2;
         }
     }
 }
