@@ -1,50 +1,27 @@
 ﻿// each question have own branch
-using System.Runtime.InteropServices;
+Console.WriteLine((int)Math.Ceiling((double)5 / 2));
 
-public class ListNode
+int MinEatingSpeed(int[] piles, int h)
 {
-     public int val;
-     public ListNode next;
-     public ListNode(int val = 0, ListNode next = null)
-     {
-        this.val = val;
-        this.next = next;
-      }
-}
-
-public class Solution
-{
-    public void ReorderList(ListNode head)
+    int max = piles[0];
+    foreach (int pile in piles)
     {
-        //find middle
-        ListNode slow = head, fast = head.next;
-        while (fast is not null && fast.next is not null)
-        {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        //reverse second  half
-        var second = slow.next;
-        var prev = slow.next = null;
-        while (second is not null)
-        {
-            var tmp = second.next;
-            second.next = prev;
-            prev = second;
-            second = tmp;
-        }
-        //merge two halfs
-        var first = head;
-        second = prev;
-        while (second is not null)
-        {
-            var tmp1 = first.next;
-            var tmp2 = second.next;
-            first.next = second;
-            second.next = tmp1;
-            first = tmp1;
-            second = tmp2;
-        }
+        if (pile > max) max = pile;
     }
+    int res = max;
+    int l = 0, r = max;
+    while (l <= r)
+    {
+        int k = (l + r) / 2;
+        int hours = 0;
+        foreach (int pile in piles) hours += (int)Math.Ceiling((double)pile / k);
+        if (hours <= h)
+        {
+            res = res < k ? res : k;
+            r = k - 1;
+        }
+        else l = k + 1;
+
+    }
+    if (res < 1) return 1; else return res;
 }
