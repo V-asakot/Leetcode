@@ -6,18 +6,13 @@ int CharacterReplacement(string s, int k)
     int l = 0;
     var count = new int[26];
 
-    int maxInArray()
-    {
-        int max = count[0];
-        foreach (int num in count)
-            if (num > max) max = num;
-        return max;
-    }
-
+    int max = 0;
     for (int r = 0; r < s.Length; r++)
     {
-        count[s[r] - 65]++;
-        while ((r - l + 1) - maxInArray() > k)
+        int key = s[r] - 65;
+        count[key]++;
+        if (count[key] > max) max = count[key];
+        while ((r - l + 1) - max > k)
         {
             count[s[l] - 65]--;
             l++;
