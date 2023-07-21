@@ -1,25 +1,31 @@
 ﻿// each question have own branch
-int MinEatingSpeed(int[] piles, int h)
+
+int CharacterReplacement(string s, int k)
 {
-    int max = piles[0];
-    foreach (int pile in piles)
+    int res = 0;
+    int l = 0;
+    var count = new int[26];
+
+    int maxInArray()
     {
-        if (pile > max) max = pile;
+        int max = count[0];
+        foreach (int num in count)
+            if (num > max) max = num;
+        return max;
     }
-    int res = max;
-    int l = 0, r = max;
-    while (l <= r)
+
+    for (int r = 0; r < s.Length; r++)
     {
-        int k = (l + r) / 2;
-        int hours = 0;
-        foreach (int pile in piles) hours += (int)Math.Ceiling((double)pile / k);
-        if (hours <= h)
+        count[s[r] - 65]++;
+        while ((r - l + 1) - maxInArray() > k)
         {
-            res = res < k ? res : k;
-            r = k - 1;
+            count[s[l] - 65]--;
+            l++;
         }
-        else l = k + 1;
+        int subLenth = r - l + 1;
+        if (subLenth > res) res = subLenth;
 
     }
     return res;
 }
+
