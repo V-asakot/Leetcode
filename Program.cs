@@ -1,31 +1,16 @@
 ﻿// each question have own branch
 
-int CharacterReplacement(string s, int k)
+int LastStoneWeight(int[] stones)
 {
-    int res = 0;
-    int l = 0;
-    var count = new int[26];
-
-    int maxInArray()
+    var queue = new PriorityQueue<int, int>(Comparer<int>.Create((x,y) => y - x));
+    foreach (var stone in stones) queue.Enqueue(stone, stone);
+    while (queue.Count > 1)
     {
-        int max = count[0];
-        foreach (int num in count)
-            if (num > max) max = num;
-        return max;
+        int max = queue.Dequeue();
+        int max_second = queue.Dequeue();
+        int diff = max - max_second;
+        if (diff > 0) queue.Enqueue(diff, diff);
     }
-
-    for (int r = 0; r < s.Length; r++)
-    {
-        count[s[r] - 65]++;
-        while ((r - l + 1) - maxInArray() > k)
-        {
-            count[s[l] - 65]--;
-            l++;
-        }
-        int subLenth = r - l + 1;
-        if (subLenth > res) res = subLenth;
-
-    }
-    return res;
+    if (queue.Count == 0) return 0;
+    else return queue.Dequeue();
 }
-
