@@ -1,16 +1,31 @@
 ﻿// each question have own branch
+using System.Collections.Generic;
 
-int LastStoneWeight(int[] stones)
+IList<IList<int>> Permute(int[] nums)
 {
-    var queue = new PriorityQueue<int, int>(Comparer<int>.Create((x,y) => y - x));
-    foreach (var stone in stones) queue.Enqueue(stone, stone);
-    while (queue.Count > 1)
+    var res = new List<IList<int>>();
+    var current = new LinkedList<int>();
+    void DFS(List<int> nums)
     {
-        int max = queue.Dequeue();
-        int max_second = queue.Dequeue();
-        int diff = max - max_second;
-        if (diff > 0) queue.Enqueue(diff, diff);
+        if (nums.Count == 0)
+        {
+            res.Add(new List<int>(current));
+            return;
+        }
+
+        for (int i = 0; i < nums.Count; i++)
+        {
+            int currentNum = nums[i];
+
+            current.AddLast(currentNum);
+            nums.RemoveAt(i);
+
+            DFS(nums);
+            current.RemoveLast();
+            nums.Insert(i, currentNum);
+        }
+
     }
-    if (queue.Count == 0) return 0;
-    else return queue.Dequeue();
+    DFS(nums.ToList());
+    return res;
 }
