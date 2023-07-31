@@ -1,31 +1,14 @@
 ﻿// each question have own branch
-using System.Collections.Generic;
 
-IList<IList<int>> Permute(int[] nums)
+int ClimbStairs(int n)
 {
-        var res = new List<IList<int>>();
-        var current = new List<int>();
-        void DFS(List<int> nums)
-        {
-            if (nums.Count == 0) 
-            {
-                res.Add(new List<int>(current));
-                return; 
-            }
-
-            for (int i=0;i < nums.Count; i++)
-            {
-                int currentNum = nums[i];
-
-                current.Add(currentNum);
-                nums.RemoveAt(i);
-
-                DFS(nums);
-                current.RemoveAt(current.Count-1);
-                nums.Insert(i,currentNum);
-            }
-
-        }
-        DFS(nums.ToList());
-        return res;
+    if (n <= 2) return n;
+    int first = 1, second = 2;
+    for (int i=2;i<n;i++)
+    {
+        int sum = first + second;
+        first = second;
+        second = sum;
+    }
+    return second;
 }
