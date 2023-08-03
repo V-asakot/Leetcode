@@ -1,7 +1,5 @@
 ﻿// each question have own branch
 
-var array = new char[][] { new char[] { '1', '1', '1', '1', '0' }, new char[] { '1', '1', '0', '1', '0' }, new char[] { '1', '1', '0', '0', '0' }, new char[] { '0', '0', '0', '0', '0' } };
-NumIslands(array);
 int NumIslands(char[][] grid)
 {
     int result = 0;
