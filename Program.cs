@@ -1,33 +1,36 @@
 ﻿// each question have own branch
 
-ListNode RemoveNthFromEnd(ListNode head, int n)
+Node CopyRandomList(Node head)
 {
-    var dummy = new ListNode(next: head);
-    var slow = dummy;
-    var fast = head;
-    while (n > 0 && fast != null)
+    var dict = new Dictionary<Node, Node?>();
+    var cur = head;
+    while (cur != null)
     {
-        fast = fast.next;
-        n--; 
+        var copy = new Node(cur.val);
+        dict.Add(cur, copy);
+        cur = cur.next;
     }
-
-    while (fast != null)
+    cur = head;
+    while (cur != null)
     {
-        fast = fast.next;
-        slow = slow.next;
+        var copy = dict[cur];
+        copy.next = cur.next is not null ? dict[cur.next] : null;
+        copy.random = cur.random is not null ? dict[cur.random] : null;
+        cur = cur.next;
     }
-
-    slow.next = slow.next.next;
-    return dummy.next;
+    return head is not null ? dict[head] : null;
 }
 
-public class ListNode
+public class Node
 {
     public int val;
-    public ListNode next;
-    public ListNode(int val = 0, ListNode next = null)
+    public Node next;
+    public Node random;
+
+    public Node(int _val)
     {
-        this.val = val;
-        this.next = next;
+        val = _val;
+        next = null;
+        random = null;
     }
 }
