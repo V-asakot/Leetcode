@@ -1,36 +1,27 @@
 ﻿// each question have own branch
 
-Node CopyRandomList(Node head)
+int FindMin(int[] nums)
 {
-    var dict = new Dictionary<Node, Node?>();
-    var cur = head;
-    while (cur != null)
+    int min = nums[0];
+    int l = 0, r = nums.Length - 1;
+    while (l <= r)
     {
-        var copy = new Node(cur.val);
-        dict.Add(cur, copy);
-        cur = cur.next;
-    }
-    cur = head;
-    while (cur != null)
-    {
-        var copy = dict[cur];
-        copy.next = cur.next is not null ? dict[cur.next] : null;
-        copy.random = cur.random is not null ? dict[cur.random] : null;
-        cur = cur.next;
-    }
-    return head is not null ? dict[head] : null;
-}
+        if (nums[l] < nums[r])
+        {
+            if (min > nums[l]) min = nums[l];
+            break;
+        }
 
-public class Node
-{
-    public int val;
-    public Node next;
-    public Node random;
-
-    public Node(int _val)
-    {
-        val = _val;
-        next = null;
-        random = null;
+        int middle = r + l / 2;
+        if (min > nums[middle]) min = nums[middle];
+        if (nums[middle] >= nums[l])
+        {
+            l = middle + 1;
+        }
+        else
+        {
+            r = middle - 1;
+        }
     }
+    return min;
 }
