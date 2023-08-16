@@ -1,27 +1,48 @@
 ﻿// each question have own branch
-
-int FindMin(int[] nums)
+Node CloneGraph(Node node)
 {
-    int min = nums[0];
-    int l = 0, r = nums.Length - 1;
-    while (l <= r)
+    if (node is null) return null;
+    var dict = new Dictionary<Node, Node>();
+
+    Node DFS(Node node)
     {
-        if (nums[l] < nums[r])
+        if (dict.ContainsKey(node))
         {
-            if (min > nums[l]) min = nums[l];
-            break;
+            return dict[node];
         }
 
-        int middle = r + l / 2;
-        if (min > nums[middle]) min = nums[middle];
-        if (nums[middle] >= nums[l])
+        var clone = new Node(node.val);
+        dict.Add(node, clone);
+        foreach (var neighbor in node.neighbors)
         {
-            l = middle + 1;
+            clone.neighbors.Add(DFS(neighbor));
         }
-        else
-        {
-            r = middle - 1;
-        }
+
+        return clone;
     }
-    return min;
+    return DFS(node);
+}
+
+class Node
+{
+    public int val;
+    public IList<Node> neighbors;
+
+    public Node()
+    {
+        val = 0;
+        neighbors = new List<Node>();
+    }
+
+    public Node(int _val)
+    {
+        val = _val;
+        neighbors = new List<Node>();
+    }
+
+    public Node(int _val, List<Node> _neighbors)
+    {
+        val = _val;
+        neighbors = _neighbors;
+    }
 }
