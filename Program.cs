@@ -1,48 +1,43 @@
 ﻿// each question have own branch
-Node CloneGraph(Node node)
+
+int MaxAreaOfIsland(int[][] grid)
 {
-    if (node is null) return null;
-    var dict = new Dictionary<Node, Node>();
+    int current, max = 0;
+    int h = grid.Length;
+    int w = grid[0].Length;
 
-    Node DFS(Node node)
+    void bfs(int i, int j)
     {
-        if (dict.ContainsKey(node))
+        var q = new Queue<(int x, int y)>();
+        q.Enqueue((i, j));
+        var directions = new (int x, int y)[] { (1, 0), (-1, 0), (0, 1), (0, -1) };
+        while (q.Count > 0)
         {
-            return dict[node];
+            var cur = q.Dequeue();
+            foreach (var direction in directions)
+            {
+                var pos = (x: cur.x + direction.x, y: cur.y + direction.y);
+                if (pos.x < h && pos.x >= 0 && pos.y < w && pos.y >= 0 && grid[pos.x][pos.y] == 1)
+                {
+                    q.Enqueue(pos);
+                    grid[pos.x][pos.y] = 2;
+                    current++;
+                }
+            }
         }
+        if (current > max) max = current;
+    }
 
-        var clone = new Node(node.val);
-        dict.Add(node, clone);
-        foreach (var neighbor in node.neighbors)
+    for (int i = 0; i < h; i++)
+    {
+        for (int j = 0; j < w; j++)
         {
-            clone.neighbors.Add(DFS(neighbor));
+            if (grid[i][j] == 1)
+            {
+                current = 0;
+                bfs(i, j);
+            }
         }
-
-        return clone;
     }
-    return DFS(node);
-}
-
-class Node
-{
-    public int val;
-    public IList<Node> neighbors;
-
-    public Node()
-    {
-        val = 0;
-        neighbors = new List<Node>();
-    }
-
-    public Node(int _val)
-    {
-        val = _val;
-        neighbors = new List<Node>();
-    }
-
-    public Node(int _val, List<Node> _neighbors)
-    {
-        val = _val;
-        neighbors = _neighbors;
-    }
+    return max;
 }
