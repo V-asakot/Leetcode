@@ -1,12 +1,39 @@
 ﻿// each question have own branch
-int Rob(int[] nums)
+ListNode AddTwoNumbers(ListNode l1, ListNode l2)
 {
-    int maxFirst = 0, maxSecond = 0;
-    foreach (int num in nums )
+    var dummy = new ListNode();
+    int carry = 0;
+    var current = dummy;
+    while (l1 != null || l2 != null)
     {
-        int temp = maxFirst + num > maxSecond ? maxFirst + num : maxSecond;
-        maxFirst = maxSecond;
-        maxSecond = temp;
+        int valueLeft = l1?.val ?? 0;
+        int valueRight = l2?.val ?? 0;
+        int value = valueLeft + valueRight + carry;
+        carry = value / 10;
+        value = value % 10;
+
+        current.next = l1 ?? l2;
+        current.next.val = value;
+        current = current.next;
+
+        l1 = l1?.next;
+        l2 = l2?.next;
     }
-    return maxSecond;
+
+    if (carry > 0)
+    {
+        current.next = new ListNode(1);
+    }
+    return dummy.next;
+}
+
+class ListNode
+{
+    public int val;
+    public ListNode next;
+    public ListNode(int val = 0, ListNode next = null) 
+    { 
+        this.val = val;
+        this.next = next;
+    } 
 }
