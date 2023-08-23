@@ -1,19 +1,37 @@
 ﻿// each question have own branch
-int[] DailyTemperatures(int[] temperatures)
+int Search(int[] nums, int target)
 {
-    var stack = new Stack<(int,int)>();
-    stack.Push((0,temperatures[0]));
-    temperatures[0] = 0;
-    for (int i=1;i < temperatures.Length;i++)
+    int l = 0, r = nums.Length - 1;
+    while (l<=r)
     {
-        int val = temperatures[i];
-        while (stack.Any() && val > stack.Peek().Item2)
+        int mid = (l+r)/2;
+        if(target == nums[mid])
         {
-            var current = stack.Pop();
-            temperatures[current.Item1] = i - current.Item1;
+            return mid;
         }
-        temperatures[i] = 0;
-        stack.Push((i,val));
+
+        if (nums[l]<=nums[mid]) 
+        {
+            if(target > nums[mid] || target < nums[l])
+            {
+                l = mid + 1;
+            }
+            else
+            {
+                r = mid - 1;
+            }
+        }
+        else
+        {
+            if (target < nums[mid] || target > nums[r])
+            {
+                r = mid - 1;
+            }
+            else
+            {
+                l = mid + 1;
+            }
+        }
     }
-    return temperatures;
+    return -1;
 }
