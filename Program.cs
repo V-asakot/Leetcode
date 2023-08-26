@@ -1,37 +1,29 @@
 ﻿// each question have own branch
-int Search(int[] nums, int target)
+TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
 {
-    int l = 0, r = nums.Length - 1;
-    while (l <= r)
+    var current = root;
+    while (current is not null)
     {
-        int mid = (l + r) / 2;
-        if (target == nums[mid])
+        if (p.val > current.val && q.val > current.val)
         {
-            return mid;
+            current = current.right;
         }
-
-        if (nums[l] <= nums[mid])
+        else if (p.val < current.val && q.val < current.val)
         {
-            if (target > nums[mid] || target < nums[l])
-            {
-                l = mid + 1;
-            }
-            else
-            {
-                r = mid - 1;
-            }
+            current = current.left;
         }
         else
         {
-            if (target < nums[mid] || target > nums[r])
-            {
-                r = mid - 1;
-            }
-            else
-            {
-                l = mid + 1;
-            }
+            return current;
         }
     }
-    return -1;
+    return current;
+}
+
+public class TreeNode
+{
+      public int val;
+      public TreeNode left;
+      public TreeNode right;
+      public TreeNode(int x) { val = x; }
 }
