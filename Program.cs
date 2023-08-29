@@ -1,29 +1,19 @@
 ﻿// each question have own branch
-TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
-{
-    var current = root;
-    while (current is not null)
-    {
-        if (p.val > current.val && q.val > current.val)
-        {
-            current = current.right;
-        }
-        else if (p.val < current.val && q.val < current.val)
-        {
-            current = current.left;
-        }
-        else
-        {
-            return current;
-        }
-    }
-    return current;
-}
 
-public class TreeNode
+int[][] KClosest(int[][] points, int k)
 {
-      public int val;
-      public TreeNode left;
-      public TreeNode right;
-      public TreeNode(int x) { val = x; }
+    var res = new int[k][];
+    var queue = new PriorityQueue<int[], int>(Comparer<int>.Create((x, y) => y - x));
+    foreach (var point in points)
+    {
+        var weighted = point[0] * point[0] + point[1] * point[1];
+        queue.Enqueue(point, weighted);
+    }
+
+    for(int i = 0; i < k; i++)
+    {
+        res[i] = queue.Dequeue();
+    }
+
+    return res;
 }
