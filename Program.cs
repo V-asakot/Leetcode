@@ -2,16 +2,13 @@
 
 int FindKthLargest(int[] nums, int k)
 {
-    var queue = new PriorityQueue<int, int>(Comparer<int>.Create((x, y) => y - x));
+    var queue = new PriorityQueue<int, int>(nums.Length);
     foreach (var num in nums)
     {
         queue.Enqueue(num, num);
+        if(queue.Count > k) queue.Dequeue();
     }
 
     var res = queue.Dequeue();
-    for (int i=1;i<k;i++)
-    {
-        res = queue.Dequeue();
-    }
     return res;
 }
