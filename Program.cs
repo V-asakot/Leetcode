@@ -1,19 +1,17 @@
 ﻿// each question have own branch
 
-int[][] KClosest(int[][] points, int k)
+int FindKthLargest(int[] nums, int k)
 {
-    var res = new int[k][];
-    var queue = new PriorityQueue<int[], int>(Comparer<int>.Create((x, y) => y - x));
-    foreach (var point in points)
+    var queue = new PriorityQueue<int, int>(Comparer<int>.Create((x, y) => y - x));
+    foreach (var num in nums)
     {
-        var weighted = point[0] * point[0] + point[1] * point[1];
-        queue.Enqueue(point, weighted);
+        queue.Enqueue(num, num);
     }
 
-    for(int i = 0; i < k; i++)
+    var res = queue.Dequeue();
+    for (int i=1;i<k;i++)
     {
-        res[i] = queue.Dequeue();
+        res = queue.Dequeue();
     }
-
     return res;
 }
