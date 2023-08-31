@@ -28,7 +28,7 @@ IList<IList<int>> PacificAtlantic(int[][] heights)
 
     for (int y = 0; y < height; y++)
     {
-        DFS(y, 0, pacific, heights[y][x - 1]);
+        DFS(y, 0, pacific, heights[y][0]);
         DFS(y, width - 1, atlantic, heights[y][x - 1]);
     }
 
