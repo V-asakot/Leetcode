@@ -1,41 +1,43 @@
 ﻿// each question have own branch
-using System.ComponentModel.Design;
-using System.Data.Common;
-using System.Security.Cryptography;
-
-IList<IList<int>> PacificAtlantic(int[][] heights)
+void Solve(char[][] board)
 {
-    int height = heights.Length, width = heights[0].Length;
-    var pacific = new HashSet<(int, int)>();
-    var atlantic = new HashSet<(int, int)>();
+    int rows = board.Length, columns = board[0].Length;
 
-    void DFS(int r, int c, HashSet<(int, int)> visit, int prevValue)
+    void DFS(int x,int y)
     {
-        if (visit.Contains((r, c)) || r < 0 || c < 0 || r == height || c == width || heights[r][c] < prevValue) return;
-        visit.Add((r, c));
-        DFS(r + 1, c, visit, heights[r][c]);
-        DFS(r - 1, c, visit, heights[r][c]);
-        DFS(r, c + 1, visit, heights[r][c]);
-        DFS(r, c - 1, visit, heights[r][c]);
+        if (x < 0 || y < 0 || x == rows || y == rows || board[x][y] != 'O') return;
+        board[x][y] = '+';
+        DFS(x + 1,y);
+        DFS(x - 1, y);
+        DFS(x, y + 1);
+        DFS(x, y - 1);
     }
 
-    int x = 0;
-    for (; x < width; x++)
+    for (int x=0;x<rows;x++)
     {
-        DFS(0, x, pacific, heights[0][x]);
-        DFS(height - 1, x, atlantic, heights[height - 1][x]);
+        DFS(x, 0);
+        DFS(x, columns - 1);
     }
 
-    for (int y = 0; y < height; y++)
+    for (int y = 1; y < rows-1; y++)
     {
-        DFS(y, 0, pacific, heights[y][0]);
-        DFS(y, width - 1, atlantic, heights[y][x - 1]);
+        DFS(0, y);
+        DFS(columns - 1, y);
     }
 
-    var res = new List<IList<int>>();
-    foreach (var pair in pacific)
+    for (int x = 0; x < rows; x++)
     {
-        if (atlantic.Contains(pair)) res.Add(new List<int>() { pair.Item1, pair.Item2 });
+        for (int y = 0; y < columns; y++)
+        {
+            if (board[x][y] == '+')
+            {
+                board[x][y] = 'O';
+            }
+            else
+            {
+                board[x][y] = 'X';
+            }
+        }
     }
-    return res;
+
 }
