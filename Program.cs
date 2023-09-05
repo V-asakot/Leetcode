@@ -1,42 +1,30 @@
 ﻿// each question have own branch
-void Solve(char[][] board)
+
+IList<IList<int>> SubsetsWithDup(int[] nums)
 {
-    int rows = board.Length, columns = board[0].Length;
-
-    void DFS(int x, int y)
+    int length = nums.Length;
+    Array.Sort(nums);
+    IList<IList<int>> res = new List<IList<int>>();
+    List<int> current = new List<int>();
+    void DFS(int i)
     {
-        if (x < 0 || y < 0 || x == rows || y == columns || board[x][y] != 'O') return;
-        board[x][y] = '+';
-        DFS(x + 1, y);
-        DFS(x - 1, y);
-        DFS(x, y + 1);
-        DFS(x, y - 1);
-    }
-
-    for (int x = 0; x < rows; x++)
-    {
-        DFS(x, 0);
-        DFS(x, columns - 1);
-    }
-
-    for (int y = 1; y < columns - 1; y++)
-    {
-        DFS(0, y);
-        DFS(rows - 1, y);
-    }
-
-    for (int x = 0; x < rows; x++)
-    {
-        for (int y = 0; y < columns; y++)
+        if (i >= length)
         {
-            if (board[x][y] == '+')
-            {
-                board[x][y] = 'O';
-            }
-            else
-            {
-                board[x][y] = 'X';
-            }
+            res.Add(new List<int>(current));
+            return;
         }
+
+        int curr = nums[i];
+        current.Add(curr);
+        int step = i + 1;  
+        DFS(step);
+        current.RemoveAt(current.Count() - 1);
+        while (step < length && nums[step] == curr)
+        {
+            step++;
+        }
+        DFS(step);
     }
+    DFS(0);
+    return res;
 }
