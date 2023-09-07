@@ -1,30 +1,54 @@
 ﻿// each question have own branch
 
-IList<IList<int>> SubsetsWithDup(int[] nums)
+using System.Security.Cryptography.X509Certificates;
+
+int OrangesRotting(int[][] grid)
 {
-    int length = nums.Length;
-    Array.Sort(nums);
-    var indexes = new Dictionary<int, int>();
-    for (int i = 0; i < length; i++)
-    {
-        indexes[nums[i]] = i;
-    }
+    int rows = grid.Length;
+    int columns = grid[0].Length;
 
-    IList<IList<int>> res = new List<IList<int>>();
-    List<int> current = new List<int>();
-    void DFS(int i)
+    var queue = new Queue<(int,int)>();
+    int fresh = 0;
+    int time = 0;
+
+    var directions = new (int, int)[] { (1,0),(-1,0),(0,1),(0,-1) };
+
+    for (int i=0;i<rows;i++)
     {
-        if (i >= length)
+        for (int j = 0; j < columns; j++)
         {
-            res.Add(new List<int>(current));
-            return;
+            if (grid[i][j] == 1)
+            {
+                fresh++;
+            }
+            else if (grid[i][j] == 2)
+            {
+                queue.Enqueue((i,j));
+            }
         }
-
-        current.Add(nums[i]);
-        DFS(i + 1);
-        current.RemoveAt(current.Count() - 1);
-        DFS(indexes[nums[i]] + 1);
     }
-    DFS(0);
-    return res;
+
+    while (queue.Count > 0 && fresh > 0)
+    {
+        for(int i =0;i<queue.Count;i++)
+        {
+            var current = queue.Dequeue();
+            foreach (var direction in directions)
+            {
+                (int x,int y) coord = (current.Item1 + direction.Item1, current.Item2 + direction.Item2);
+                if (coord.x >= 0 && coord.x < rows && coord.y >= 0 && coord.y < columns && grid[coord.x][coord.y] == 1)
+                {
+                    grid[coord.x][coord.y] = 2;
+                    queue.Enqueue(coord);
+                    fresh--;
+                }
+            }
+        }
+        time++;
+    }
+
+    if (fresh > 0)
+        return -1;
+    else
+        return time;
 }
