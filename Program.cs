@@ -1,54 +1,25 @@
 ﻿// each question have own branch
 
-using System.Security.Cryptography.X509Certificates;
 
-int OrangesRotting(int[][] grid)
+bool HasCycle(ListNode head)
 {
-    int rows = grid.Length;
-    int columns = grid[0].Length;
-
-    var queue = new Queue<(int,int)>();
-    int fresh = 0;
-    int time = 0;
-
-    var directions = new (int, int)[] { (1,0),(-1,0),(0,1),(0,-1) };
-
-    for (int i=0;i<rows;i++)
+    ListNode slow = head, fast = head;
+    while (fast != null && fast.next != null)
     {
-        for (int j = 0; j < columns; j++)
-        {
-            if (grid[i][j] == 1)
-            {
-                fresh++;
-            }
-            else if (grid[i][j] == 2)
-            {
-                queue.Enqueue((i,j));
-            }
-        }
+        slow = slow.next; 
+        fast = fast.next.next;
+        if (fast == slow) return true;
     }
+    return false;
+}
 
-    while (queue.Count > 0 && fresh > 0)
+public class ListNode
+{
+    public int val;
+    public ListNode next;
+    public ListNode(int x)
     {
-        for(int i =0;i<queue.Count;i++)
-        {
-            var current = queue.Dequeue();
-            foreach (var direction in directions)
-            {
-                (int x,int y) coord = (current.Item1 + direction.Item1, current.Item2 + direction.Item2);
-                if (coord.x >= 0 && coord.x < rows && coord.y >= 0 && coord.y < columns && grid[coord.x][coord.y] == 1)
-                {
-                    grid[coord.x][coord.y] = 2;
-                    queue.Enqueue(coord);
-                    fresh--;
-                }
-            }
-        }
-        time++;
+        val = x;
+        next = null;
     }
-
-    if (fresh > 0)
-        return -1;
-    else
-        return time;
 }
