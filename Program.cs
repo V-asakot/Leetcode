@@ -1,25 +1,16 @@
 ﻿// each question have own branch
 
-
-bool HasCycle(ListNode head)
+bool CanJump(int[] nums)
 {
-    ListNode slow = head, fast = head;
-    while (fast != null && fast.next != null)
+    int length = nums.Length;
+    var target = length - 1;
+    for (int i = target - 1; i >= 0; i--)
     {
-        slow = slow.next; 
-        fast = fast.next.next;
-        if (fast == slow) return true;
+        if (i + nums[i] >= target)
+        {
+            target = i; 
+        }
     }
-    return false;
-}
 
-public class ListNode
-{
-    public int val;
-    public ListNode next;
-    public ListNode(int x)
-    {
-        val = x;
-        next = null;
-    }
+    return target == 0;
 }
