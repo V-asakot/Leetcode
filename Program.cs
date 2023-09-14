@@ -1,16 +1,22 @@
 ﻿// each question have own branch
 
-bool CanJump(int[] nums)
+int Jump(int[] nums)
 {
-    int length = nums.Length;
-    var target = length - 1;
-    for (int i = target - 1; i >= 0; i--)
+    if (nums.Length == 1) return 0;
+    int l = 1, r = nums[0];
+    int level = 1;
+    while (r < nums.Length - 1)
     {
-        if (i + nums[i] >= target)
+        int cur = 0;
+        int farthest = 0;
+        for (int i = l; i < r + 1; i++)
         {
-            target = i; 
+            farthest = farthest > (cur = i + nums[i]) ? farthest : cur;
         }
+        l = r + 1;
+        r = farthest;
+        level++;
     }
 
-    return target == 0;
+    return level;
 }
