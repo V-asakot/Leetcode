@@ -1,22 +1,40 @@
 ﻿// each question have own branch
 
-int Jump(int[] nums)
-{
-    if (nums.Length == 1) return 0;
-    int l = 1, r = nums[0];
-    int level = 1;
-    while (r < nums.Length - 1)
+ IList<IList<int>> LevelOrder(TreeNode root) 
+ {
+    var result = new List<IList<int>>();
+    var queue = new Queue<TreeNode>();
+    
+    while(queue.Count > 0)
     {
-        int cur = 0;
-        int farthest = 0;
-        for (int i = l; i < r + 1; i++)
+        var curLength = queue.Count;
+        List<int> level = new();
+        for(int i = 0;i < curLength; i++)
         {
-            farthest = farthest > (cur = i + nums[i]) ? farthest : cur;
+            var node = queue.Dequeue();
+            if(node is not null)
+            {
+                level.Add(node.val);
+                queue.Enqueue(node.left);
+                queue.Enqueue(node.right);
+            }
         }
-        l = r + 1;
-        r = farthest;
-        level++;
+        if(level.Count > 0) 
+            result.Add(level);
+        
     }
 
-    return level;
-}
+    return result;
+ }
+
+ public class TreeNode {
+      public int val;
+      public TreeNode left;
+      public TreeNode right;
+      public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+          this.val = val;
+          this.left = left;
+         this.right = right;
+      }
+ }
+
