@@ -1,40 +1,50 @@
 ﻿// each question have own branch
 
- IList<IList<int>> LevelOrder(TreeNode root) 
- {
-    var result = new List<IList<int>>();
-    var queue = new Queue<TreeNode>();
-    
-    while(queue.Count > 0)
+public bool CanFinish(int numCourses, int[][] prerequisites) {
+{
+    var dict = new Dictionary<int,List<int>>();
+    for(int i=0;i< numCourses;i++)
     {
-        var curLength = queue.Count;
-        List<int> level = new();
-        for(int i = 0;i < curLength; i++)
-        {
-            var node = queue.Dequeue();
-            if(node is not null)
-            {
-                level.Add(node.val);
-                queue.Enqueue(node.left);
-                queue.Enqueue(node.right);
-            }
-        }
-        if(level.Count > 0) 
-            result.Add(level);
-        
+        dict.Add(i,new List<int>());
     }
 
-    return result;
- }
+    foreach(var prerequisite in prerequisites)
+    {
+        dict[prerequisite[0]].Add(prerequisite[1]);
+    }
+    
+    var visitSet = new HashSet<int>();
 
- public class TreeNode {
-      public int val;
-      public TreeNode left;
-      public TreeNode right;
-      public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
-          this.val = val;
-          this.left = left;
-         this.right = right;
-      }
- }
+    bool DFS(int course)
+    {
+        if(visitSet.Contains(course))
+        {
+            return false;
+        }
 
+        if(dict[course].Count == 0)
+        {
+            return true;
+        }
+        visitSet.Add(course);
+
+        foreach(int child in dict[course])
+        {
+            if(!DFS(child)) 
+            {
+                return false;
+            }
+        }
+        visitSet.Remove(course);
+        dict[course] = new List<int>();
+        return true;
+    }
+
+    for(int i=0;i< numCourses;i++)
+    {
+        if(!DFS(0)) return false;
+    }
+
+    return true;
+}
+    
