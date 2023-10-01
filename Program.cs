@@ -1,50 +1,23 @@
-﻿// each question have own branch
-
-public bool CanFinish(int numCourses, int[][] prerequisites) {
+﻿using System;
+// each question have own branch
+public IList<IList<int>> CombinationSum2(int[] candidates, int target) 
 {
-    var dict = new Dictionary<int,List<int>>();
-    for(int i=0;i< numCourses;i++)
+    Array.Sort(candidates);
+    var length = candidates.Length;
+    var res = new List<IList<int>>();
+    void dfs(int pointer, List<int> current,int total)
     {
-        dict.Add(i,new List<int>());
-    }
-
-    foreach(var prerequisite in prerequisites)
-    {
-        dict[prerequisite[0]].Add(prerequisite[1]);
-    }
-    
-    var visitSet = new HashSet<int>();
-
-    bool DFS(int course)
-    {
-        if(visitSet.Contains(course))
+        int val = -1;
+        for(int i=0;i<length;i++)
         {
-            return false;
+            if(val == candidates[i]) continue;
+            current.Add(val);
+            dfs(++pointer, current, total+val);
+            current.RemoveAt(current.Count-1);
+            val = candidates[i];
         }
-
-        if(dict[course].Count == 0)
-        {
-            return true;
-        }
-        visitSet.Add(course);
-
-        foreach(int child in dict[course])
-        {
-            if(!DFS(child)) 
-            {
-                return false;
-            }
-        }
-        visitSet.Remove(course);
-        dict[course] = new List<int>();
-        return true;
     }
 
-    for(int i=0;i< numCourses;i++)
-    {
-        if(!DFS(0)) return false;
-    }
-
-    return true;
+    dfs(0,new List<int>(),0);
+    return res;   
 }
-    
