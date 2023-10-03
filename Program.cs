@@ -1,27 +1,24 @@
 ﻿using System;
 // each question have own branch
 
-int LeastInterval(char[] tasks, int n) 
+int[][] Merge(int[][] intervals) 
 {
-        if (0 == n) return tasks.Length;
+    Array.Sort(intervals,(x,y)=> x[0] - y[0]);
 
-        var counts = tasks
-            .GroupBy(x => x)
-            .Select(x => x.Count());
-
-        int chCount = 0, maxCount = 0, ans = 0;
-        foreach(var count in counts)
+    int resIndex = 0;
+    for(int i=1;i < intervals.Length;i++){
+        var interval = intervals[resIndex][1];
+        if(interval >= intervals[i][0])
         {
-            if (count > maxCount)
-            {
-                chCount = 1; maxCount = count;
-            }
-            else if (count == maxCount)
-            {
-                chCount++;
-            }
+            if(interval < intervals[i][1])
+                intervals[resIndex][1] = intervals[i][1];
+        }else
+        {
+            resIndex++;
+            intervals[resIndex] = intervals[i];
         }
-        ans = (maxCount - 1) * (n + 1) + chCount;
-        if (ans >= tasks.Length) return ans;
-        return tasks.Length;
+    }
+
+    resIndex++;
+    return intervals[..resIndex];
 }
