@@ -1,24 +1,18 @@
 ﻿using System;
-// each question have own branch
+using System.Text;
 
-int[][] Merge(int[][] intervals) 
+string LongestCommonPrefix(string[] strs) 
 {
-    Array.Sort(intervals,(x,y)=> x[0] - y[0]);
-
-    int resIndex = 0;
-    for(int i=1;i < intervals.Length;i++){
-        var interval = intervals[resIndex][1];
-        if(interval >= intervals[i][0])
-        {
-            if(interval < intervals[i][1])
-                intervals[resIndex][1] = intervals[i][1];
-        }else
-        {
-            resIndex++;
-            intervals[resIndex] = intervals[i];
+    if(strs.Length == 1) return strs[0];
+    var res = new StringBuilder("");
+    for(int i = 0;i < strs[0].Length;i++)
+    {
+        var ch = strs[0][i];
+        for(int j=1;j < strs.Length;j++)
+        {   
+            if(strs[j].Length <= i || ch != strs[j][i]) return res.ToString();
         }
+        res.Append(ch);
     }
-
-    resIndex++;
-    return intervals[..resIndex];
+    return res.ToString();
 }
