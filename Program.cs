@@ -1,24 +1,35 @@
-﻿bool IsHappy(int n) 
+﻿// 12321 1221 12 123
+
+string LongestPalindrome(string s)
 {
-    var hash = new HashSet<int>();
-    while(!hash.Contains(n))
+    var resultL = 0;
+    var resLength = 0;
+
+    void checkForPalindrome(int l,int r)
     {
-        if(n == 1)
+        while (l >= 0 && r < s.Length && s[l] == s[r])
         {
-            return true;
+            if (r - l + 1 > resLength)
+            {
+                resLength = r - l + 1;
+                resultL = l;
+            }
+
+            l--;
+            r++;
         }
-        hash.Add(n);
-        
-        var sum = 0;
-        while(n > 0)
-        {
-            var temp = n % 10;
-            sum += temp * temp;
-            n /= 10;
-        }
-        n = sum;
     }
 
-    return false;
-}
+    for(int i =0; i<s.Length; i++)
+    {
+        var l, r = i;
+        checkForPalindrome();
 
+        l = i;
+        r = i + 1;
+
+        checkForPalindrome();
+    }
+
+    return s.Substring(resultL, resLength);
+}
