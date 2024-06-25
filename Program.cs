@@ -1,35 +1,29 @@
-﻿// 12321 1221 12 123
-
-string LongestPalindrome(string s)
+﻿
+public class TreeNode {
+    public int val;
+    public TreeNode left;
+    public TreeNode right;
+    public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+ 
+public class Solution
 {
-    var resultL = 0;
-    var resLength = 0;
-
-    void checkForPalindrome(int l,int r)
+    private int GoodNode(TreeNode root, int max) 
     {
-        while (l >= 0 && r < s.Length && s[l] == s[r])
-        {
-            if (r - l + 1 > resLength)
-            {
-                resLength = r - l + 1;
-                resultL = l;
-            }
-
-            l--;
-            r++;
-        }
+        if (root is null) return 0;
+        var result = root.val >= max ? 1 : 0;
+        max = max > root.val ? max : root.val;
+        result += GoodNode(root.right, max);
+        result += GoodNode(root.left, max);
+        return result;
     }
 
-    for(int i =0; i<s.Length; i++)
+    public int GoodNodes(TreeNode root)
     {
-        var l, r = i;
-        checkForPalindrome();
-
-        l = i;
-        r = i + 1;
-
-        checkForPalindrome();
+         return 1 + GoodNode(root.left, root.val) + GoodNode(root.right, root.val);
     }
-
-    return s.Substring(resultL, resLength);
 }
